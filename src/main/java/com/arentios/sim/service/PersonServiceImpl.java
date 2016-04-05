@@ -2,22 +2,34 @@ package com.arentios.sim.service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import Cache.PersonCacheManager;
+
 import com.arentios.sim.domain.Person;
 import com.arentios.sim.domain.PersonLookupTable;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * Implementation of Person Service
+ * @author Arentios
+ *
+ */
 public class PersonServiceImpl implements PersonService {
 
+	
+	private static Logger LOGGER = LoggerFactory.getLogger(PersonServiceImpl.class);
+	
+	
 	public Person generatePerson() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
@@ -34,19 +46,24 @@ public class PersonServiceImpl implements PersonService {
 			
 			ObjectMapper mapper = new ObjectMapper();
 			
-
+			PersonCacheManager cacheManager = PersonCacheManager.getInstance();
 			ArrayList<Person> personData = mapper.readValue(reader, new TypeReference<ArrayList<Person>>(){});
 			for(Person currPerson : personData){
 				PersonLookupTable.addPerson(currPerson);
-				System.out.println(currPerson.getPersonId() + " " + PersonLookupTable.lookupPerson(currPerson.getPersonId()).getAge());
-			}
+				cacheManager.putPerson(currPerson);
+				LOGGER.debug("Adding personId="+currPerson.getPersonId() + " to cache");
+			}			
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
+			LOGGER.error(e.getMessage());
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			LOGGER.error(e.getMessage());
 			e.printStackTrace();
 		}
 		
+	}
+	
+	public Person[] getPersonData(){
+		return null;
 	}
 }
