@@ -1,7 +1,13 @@
-package Cache;
+package com.arentios.sim.cache;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.commons.jcs.JCS;
 import org.apache.commons.jcs.access.CacheAccess;
+import org.apache.commons.jcs.engine.control.CompositeCacheManager;
+import org.apache.commons.jcs.engine.control.event.behavior.IElementEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +21,7 @@ import com.arentios.sim.domain.Person;
 public class PersonCacheManager {
 
 	
-	private static CacheAccess<String, Person> personCache;
+	private static CacheAccess<Long, Person> personCache;
 	private static Logger LOGGER = LoggerFactory.getLogger(PersonCacheManager.class);
 	private static PersonCacheManager instance;
 	
@@ -35,9 +41,9 @@ public class PersonCacheManager {
 		try{
 			//Clear out any old entry for this person
 			if(person != null){
-				personCache.remove("person"+person.getPersonId());
+				personCache.remove(person.getPersonId());
 			}
-			personCache.put("person"+person.getPersonId(), person);
+			personCache.put(person.getPersonId(), person);
 		}catch(Exception e){
 			LOGGER.error(e.getMessage());
 			return false;
@@ -47,11 +53,28 @@ public class PersonCacheManager {
 	
 	public Person getPerson(Long personId){
 		try{
-			Person person = personCache.get("person"+personId);
+			Person person = personCache.get(personId);
 			return person;
 		}catch(Exception e){
 			LOGGER.error(e.getMessage());
 			return null;
 		}
+
 	}
+	
+	/**
+	 * Return an array list of all person IDs from the cache
+	 * @return
+	 */
+	public ArrayList<Long> getAllPersonKeys(){
+		Set<Object> rawKeys = CompositeCacheManager.getInstance().getCache("personCache").getMemoryCache().getKeySet();
+		ArrayList<Long> results = new ArrayList<Long>();
+		for(Object o : rawKeys){
+			results.add((Long) o);
+		}	
+		return results;
+		
+		
+	}
+
 }

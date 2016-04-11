@@ -94,6 +94,21 @@ public class Person {
 		this.alive = alive;
 	}
 
+	@Override
+	public String toString() {
+		return "Person ["
+				+ (age != null ? "age=" + age + ", " : "")
+				+ (personality != null ? "personality=" + personality + ", "
+						: "")
+				+ (attributes != null ? "attributes=" + attributes + ", " : "")
+				+ (personId != null ? "personId=" + personId + ", " : "")
+				+ (happiness != null ? "happiness=" + happiness + ", " : "")
+				+ (parents != null ? "parents=" + parents + ", " : "")
+				+ (children != null ? "children=" + children + ", " : "")
+				+ (partner != null ? "partner=" + partner + ", " : "")
+				+ (alive != null ? "alive=" + alive : "") + "]";
+	}
+
 
 	
 	

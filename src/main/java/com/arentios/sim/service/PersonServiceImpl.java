@@ -11,10 +11,9 @@ import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import Cache.PersonCacheManager;
-
+import com.arentios.sim.cache.PersonCacheManager;
+import com.arentios.sim.cache.PersonLookupTable;
 import com.arentios.sim.domain.Person;
-import com.arentios.sim.domain.PersonLookupTable;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -47,9 +46,10 @@ public class PersonServiceImpl implements PersonService {
 			ObjectMapper mapper = new ObjectMapper();
 			
 			PersonCacheManager cacheManager = PersonCacheManager.getInstance();
+			PersonLookupTable lookupManager = PersonLookupTable.getInstance();
 			ArrayList<Person> personData = mapper.readValue(reader, new TypeReference<ArrayList<Person>>(){});
 			for(Person currPerson : personData){
-				PersonLookupTable.addPerson(currPerson);
+				lookupManager.addPerson(currPerson);
 				cacheManager.putPerson(currPerson);
 				LOGGER.debug("Adding personId="+currPerson.getPersonId() + " to cache");
 			}			
@@ -63,7 +63,19 @@ public class PersonServiceImpl implements PersonService {
 		
 	}
 	
-	public Person[] getPersonData(){
-		return null;
+	public Person[] getAllPersonData(){
+		PersonCacheManager cacheManager = PersonCacheManager.getInstance();	
+		//This mixing of types and structures is not ideal but is here as a demonstration
+		ArrayList<Long> personIds = cacheManager.getAllPersonKeys();
+		Person[] results = new Person[personIds.size()];
+		for(int i=0;i<results.length;i++){
+			results[i] = cacheManager.getPerson(personIds.get(i));
+		}
+		return results;
+	}
+
+	public Person getPersonData(Long personId) {
+		PersonCacheManager cacheManager = PersonCacheManager.getInstance();	
+		return cacheManager.getPerson(personId);
 	}
 }

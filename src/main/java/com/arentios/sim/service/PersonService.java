@@ -19,5 +19,13 @@ public interface PersonService {
 	 * Return all of the person data from the cache
 	 * @return
 	 */
-	public Person[] getPersonData();
+	public Person[] getAllPersonData();
+	
+	/**
+	 * Get data for a given person ID
+	 * @param personId
+	 * @return
+	 */
+	public Person getPersonData(Long personId);
+	
 }
