@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import com.arentios.sim.cache.PersonCacheManager;
 import com.arentios.sim.cache.PersonLookupTable;
@@ -22,6 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @author Arentios
  *
  */
+@Service("personService")
 public class PersonServiceImpl implements PersonService {
 
 	
