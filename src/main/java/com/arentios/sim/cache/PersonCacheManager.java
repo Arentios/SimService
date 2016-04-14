@@ -21,13 +21,15 @@ import com.arentios.sim.domain.Person;
 public class PersonCacheManager {
 
 	
+	private static final String PERSON_CACHE = "personCache";
+	
 	private static CacheAccess<Long, Person> personCache;
 	private static Logger LOGGER = LoggerFactory.getLogger(PersonCacheManager.class);
 	private static PersonCacheManager instance;
 	
 	private PersonCacheManager(){
 		
-		personCache = JCS.getInstance("personCache");
+		personCache = JCS.getInstance(PERSON_CACHE);
 	}
 	
 	public static PersonCacheManager getInstance(){
@@ -67,7 +69,7 @@ public class PersonCacheManager {
 	 * @return
 	 */
 	public ArrayList<Long> getAllPersonKeys(){
-		Set<Object> rawKeys = CompositeCacheManager.getInstance().getCache("personCache").getMemoryCache().getKeySet();
+		Set<Object> rawKeys = CompositeCacheManager.getInstance().getCache(PERSON_CACHE).getMemoryCache().getKeySet();
 		ArrayList<Long> results = new ArrayList<Long>();
 		for(Object o : rawKeys){
 			results.add((Long) o);

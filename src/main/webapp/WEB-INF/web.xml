@@ -4,8 +4,7 @@
 
 <web-app>
 	<display-name>Simulator Service</display-name>
-	<!-- 
-	Setting up context stuff for later use
+
 	<listener>
 		<listener-class>
 			org.springframework.web.context.ContextLoaderListener
@@ -19,7 +18,7 @@
             classpath:app-context.xml
         </param-value>
     </context-param>
- -->
+
 	<filter>
 		<filter-name>encoding-filter</filter-name>
 		<filter-class>

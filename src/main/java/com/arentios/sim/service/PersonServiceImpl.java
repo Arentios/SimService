@@ -23,11 +23,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @author Arentios
  *
  */
-@Service("personService")
 public class PersonServiceImpl implements PersonService {
 
 	
 	private static Logger LOGGER = LoggerFactory.getLogger(PersonServiceImpl.class);
+	private String serviceUrlString;
 	
 	
 	public Person generatePerson() {
@@ -37,7 +37,7 @@ public class PersonServiceImpl implements PersonService {
 	public void fetchPersonData(){
 		try {
 			//XXX Hard coded for now until this is all pulled out into properties for injection
-			URL serviceUrl = new URL("http://localhost:5000/data");
+			URL serviceUrl = new URL(serviceUrlString);
 			HttpURLConnection serviceConnection = (HttpURLConnection) serviceUrl.openConnection();
 			serviceConnection.setRequestMethod("GET");
 			serviceConnection.setRequestProperty("Accept", "application/json");
@@ -80,4 +80,13 @@ public class PersonServiceImpl implements PersonService {
 		PersonCacheManager cacheManager = PersonCacheManager.getInstance();	
 		return cacheManager.getPerson(personId);
 	}
+
+	public String getServiceUrlString() {
+		return serviceUrlString;
+	}
+
+	public void setServiceUrlString(String serviceUrlString) {
+		this.serviceUrlString = serviceUrlString;
+	}
+
 }
