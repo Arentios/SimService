@@ -31,12 +31,39 @@ public class PersonServiceImpl implements PersonService {
 	
 	
 	public Person generatePerson() {
-		return null;
+		PersonCacheManager cacheManager = PersonCacheManager.getInstance();	
+		PersonLookupTable lookupManager = PersonLookupTable.getInstance();
+		Long personId = lookupManager.getNextId();
+		Person person = new Person(personId);
+		person.randomize();
+		try{
+			cacheManager.putPerson(person);
+			lookupManager.addPerson(person);
+		}catch(Exception e){
+			LOGGER.error("Failed to generate random person with exception="+e.getMessage());
+			return null;
+		}		
+		return person;		
 	}
+	
+	public Person generatePerson(Integer age, Integer happiness) {
+		PersonCacheManager cacheManager = PersonCacheManager.getInstance();	
+		PersonLookupTable lookupManager = PersonLookupTable.getInstance();
+		Long personId = lookupManager.getNextId();
+		Person person = new Person(personId, age, happiness);
+		try{
+			cacheManager.putPerson(person);
+			lookupManager.addPerson(person);
+		}catch(Exception e){
+			LOGGER.error("Failed to generate person with exception="+e.getMessage());
+			return null;
+		}		
+		return person;		
+	}
+	
 	
 	public void fetchPersonData(){
 		try {
-			//XXX Hard coded for now until this is all pulled out into properties for injection
 			URL serviceUrl = new URL(serviceUrlString);
 			HttpURLConnection serviceConnection = (HttpURLConnection) serviceUrl.openConnection();
 			serviceConnection.setRequestMethod("GET");

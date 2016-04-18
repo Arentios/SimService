@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * Static class to hold constants for personalities
+ * Static class to hold constants for personalities, TBI
  * @author Arentios
  *
  */
@@ -13,7 +13,7 @@ public class PersonalityConstants {
 	public static final ArrayList<String> personalityTraits;
 	
 	static{
-		String[] traits = new String[]{"Focus", "Lust", "Creativity"};
+		String[] traits = new String[]{"Focus", "Desire", "Creativity"};
 		personalityTraits = new ArrayList<String>(Arrays.asList(traits));
 	}
 

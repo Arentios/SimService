@@ -2,6 +2,7 @@ package com.arentios.sim.domain;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -22,7 +23,28 @@ public class Person {
 		//personality = Personality.
 	}
 	
-	Person(){	
+	public Person(){
+		
+	}
+	
+	public Person(Long personId, Integer age, Integer happiness){
+		this.personId = personId;
+		this.age = age;
+		this.happiness = happiness;
+		this.alive = true;
+		this.parents = new ArrayList<Integer>();
+		this.children = new ArrayList<Integer>();
+		this.partner = new ArrayList<Integer>();
+		this.attributes = new HashMap<String, Integer>();		
+	}
+	
+	public Person(Long personId){	
+		this.personId = personId;
+		this.parents = new ArrayList<Integer>();
+		this.children = new ArrayList<Integer>();
+		this.partner = new ArrayList<Integer>();
+		this.alive = true;
+		this.attributes = new HashMap<String, Integer>();
 	}
 	
 	public Integer getAge() {
@@ -109,7 +131,14 @@ public class Person {
 				+ (alive != null ? "alive=" + alive : "") + "]";
 	}
 
-
+	/**
+	 * Generate a random set of basic attributes
+	 */
+	public void randomize(){
+		Random rand = new Random();
+		this.age = rand.nextInt(12)+18;
+		this.happiness = rand.nextInt(50)+50;
+	}
 	
 	
 	

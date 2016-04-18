@@ -3,12 +3,13 @@ package com.arentios.sim.cache;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import com.arentios.sim.domain.Person;
 
 /**
  * Class to hold lookup table for people
- * Using an instance pattern in order to allow for addition of thread safe behavior later
+ * Using an instance pattern in order to allow for thread safe behavior later
  * @author Arentios
  *
  */
@@ -56,5 +57,18 @@ public class PersonLookupTable {
 		return true;
 	}
 
+	/**
+	 * Determine the person ID for a new person
+	 * @return
+	 */
+	public Long getNextId(){
+		Set<Long> personIds = lookupTable.keySet();
+		Long maxId = (long) -1;
+		for(Long personId : personIds){
+			if(personId > maxId)
+				maxId = personId;
+		}
+		return maxId+1;
+	}
 
 }

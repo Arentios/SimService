@@ -70,4 +70,23 @@ public class PersonServiceController {
 		
 	}
 	
+	/**
+	 * Service call to generate a person with random attributes
+	 * NOTE: This could easily be a GET request but best practices is to not allow underlying modifications on a GET
+	 * @return
+	 */
+	@RequestMapping(value = "/generate", method = RequestMethod.POST)
+	public Long generatePerson(){
+		LOGGER.info("Attempting to generate generic person");
+		return personService.generatePerson().getPersonId();
+	}
+	
+	@RequestMapping(value = "/generate/{age}/{happiness}", method = RequestMethod.POST)
+	public Long generatePerson(@PathVariable Integer age, @PathVariable Integer happiness){
+		LOGGER.info("Attempting to generate generic person");
+		return personService.generatePerson(age, happiness).getPersonId();
+	}
+	
+	
+	
 }
