@@ -3,8 +3,10 @@ package com.arentios.sim.service;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -82,6 +84,7 @@ public class PersonServiceImpl implements PersonService {
 				cacheManager.putPerson(currPerson);
 				LOGGER.debug("Adding personId="+currPerson.getPersonId() + " to cache");
 			}			
+			serviceConnection.disconnect();
 		} catch (MalformedURLException e) {
 			LOGGER.error(e.getMessage());
 			e.printStackTrace();
@@ -114,6 +117,44 @@ public class PersonServiceImpl implements PersonService {
 
 	public void setServiceUrlString(String serviceUrlString) {
 		this.serviceUrlString = serviceUrlString;
+	}
+
+	public void postPersonData() {
+		Person[] data = getAllPersonData();
+		URL serviceUrl;
+		try {
+			serviceUrl = new URL(serviceUrlString);
+			HttpURLConnection serviceConnection = (HttpURLConnection) serviceUrl.openConnection();
+			serviceConnection.setRequestMethod("POST");
+			serviceConnection.setRequestProperty("Content-Type", "application/json");
+			serviceConnection.setRequestProperty("Accept", "application/json");
+			serviceConnection.setDoOutput(true);
+			ObjectMapper mapper = new ObjectMapper();
+			OutputStreamWriter writer = new OutputStreamWriter(serviceConnection.getOutputStream());
+			StringBuffer message = new StringBuffer();
+			message.append("[");
+			for(Person person : data){
+				message.append(mapper.writeValueAsString(person));
+			}
+			message.append("]");
+			LOGGER.info("Uploading person data with value="+message);
+			writer.write(message.toString());
+			writer.flush();
+			writer.close();
+			serviceConnection.disconnect();
+		//TODO: Improve these logging bits to be more useful
+		} catch (MalformedURLException e) {
+			LOGGER.error(e.getMessage());
+			e.printStackTrace();
+		} catch (ProtocolException e) {
+			LOGGER.error(e.getMessage());
+			e.printStackTrace();
+		} catch (IOException e) {
+			LOGGER.error(e.getMessage());
+			e.printStackTrace();
+		}
+		
+		
 	}
 
 }

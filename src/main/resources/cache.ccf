@@ -7,6 +7,6 @@ jcs.auxiliary.DC.attributes=org.apache.commons.jcs.auxiliary.disk.indexed.Indexe
 jcs.auxiliary.DC.attributes.DiskPath=d:/jcs/data
 jcs.region.personCache=DC
 jcs.region.personCache.cacheattributes=org.apache.commons.jcs.engine.CompositeCacheAttributes
-jcs.region.personCache.cacheattributes.MaxObjects=1000
+jcs.region.personCache.cacheattributes.MaxObjects=100000
 jcs.region.personCache.cacheattributes.MemoryCacheName=org.apache.commons.jcs.engine.memory.lru.LRUMemoryCache
 jcs.region.personCache.elementattributes=org.apache.commons.jcs.engine.ElementAttributes

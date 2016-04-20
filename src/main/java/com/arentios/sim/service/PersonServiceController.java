@@ -87,6 +87,20 @@ public class PersonServiceController {
 		return personService.generatePerson(age, happiness).getPersonId();
 	}
 	
+	@RequestMapping(value = "/upload", method = RequestMethod.POST)
+	public ResponseEntity<String> postPersonData(){
+		LOGGER.info("Attempting to post person data");
+		try{
+			personService.postPersonData();
+			return ResponseEntity.status(HttpStatus.OK).body("Uploaded Data successfully");
+		}
+		catch(Exception e){
+			LOGGER.error("Failed to RESTfully upload person data");
+			LOGGER.error(e.getMessage());
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Failed to upload Person Data");
+		}
+	}
+	
 	
 	
 }

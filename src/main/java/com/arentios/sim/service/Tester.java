@@ -12,6 +12,7 @@ public class Tester {
 	public static void main(String[] args) {
 		PersonService personService = new PersonServiceImpl();
 		personService.fetchPersonData();
+		personService.postPersonData();
 		Person[] data = personService.getAllPersonData();
 		for (Person person : data){
 			System.out.println(person.toString());

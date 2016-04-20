@@ -36,7 +36,10 @@ public interface PersonService {
 	 */
 	public Person getPersonData(Long personId);
 	
-
+	/**
+	 * Calls the Python web service and passes in person data for the Python service to process
+	 */
+	public void postPersonData();
 	
 	
 }
